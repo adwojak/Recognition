@@ -1,13 +1,15 @@
+#faces_count is property used only for tests purposes
 min_neighbors: 5
 min_width: 30
 min_height: 30
 images:
   -
     path: assets/abba.png
-    scale_factor: 1.10
+    faces_count: 4
   -
     path: assets/important.jpg
-    scale_factor: 1.10
+    faces_count: 3
   -
     path: assets/smiling_people.jpg
-    scale_factor: 1.10
+    scale_factor: 1.13
+    faces_count: 13

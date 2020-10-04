@@ -1,4 +1,5 @@
 import cv2
+import os
 from yaml import safe_load
 
 
@@ -13,21 +14,23 @@ class Base:
 
 
 class FaceRecognition(Base):
-    CASC_PATH = './haarcascade_frontalface_default.xml'
-    FACE_CASCADE = cv2.CascadeClassifier(CASC_PATH)
+    CASC_PATH = 'haarcascade_frontalface_default.xml'
+    FACE_CASCADE = cv2.CascadeClassifier(os.path.join(os.path.dirname(__file__), CASC_PATH))
 
     def get_images_with_faces(self, config):
-        images_with_faces = []
+        images_faces = []
         for row in config['images']:
             image = self.read_image(row['path'])
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             faces = self.detect_multi_scale(gray, scale_factor=row.get('scale_factor'),
                                             min_neighbors=config['min_neighbors'], min_size=config['min_size'])
-            images_with_faces.append((image, faces))
-        return images_with_faces
+            images_faces.append((image, faces))
+        return images_faces
 
-    def read_image(self, image_path):
-        return cv2.imread(image_path)
+    @staticmethod
+    def read_image(image_path):
+        aa = os.path.join(os.path.dirname(__file__), image_path)
+        return cv2.imread(aa)
 
     def detect_multi_scale(self, gray, scale_factor, min_neighbors, min_size):
         return self.FACE_CASCADE.detectMultiScale(
@@ -38,15 +41,20 @@ class FaceRecognition(Base):
             flags=cv2.CASCADE_SCALE_IMAGE
         )
 
-    def print_face(self, image, faces):
+    @staticmethod
+    def print_single_image(image, faces):
         for (x, y, w, h) in faces:
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         cv2.imshow('', image)
         cv2.waitKey(0)
 
+    def print_images(self, images_faces):
+        for image, faces in images_faces:
+            self.print_single_image(image, faces)
 
-face_recognition = FaceRecognition()
-config = face_recognition.read_config('config.yaml')
-images_with_faces = face_recognition.get_images_with_faces(config)
-face_recognition.print_face(*images_with_faces[0])
+
+# face_recognition = FaceRecognition()
+# config = face_recognition.read_config('config.yaml')
+# images_with_faces = face_recognition.get_images_with_faces(config)
+# face_recognition.print_images(images_with_faces)
