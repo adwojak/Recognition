@@ -1,0 +1,13 @@
+min_neighbors: 5
+min_width: 30
+min_height: 30
+images:
+  -
+    path: assets/abba.png
+    scale_factor: 1.10
+  -
+    path: assets/important.jpg
+    scale_factor: 1.10
+  -
+    path: assets/smiling_people.jpg
+    scale_factor: 1.10
