@@ -29,8 +29,8 @@ class FaceRecognition(Base):
 
     @staticmethod
     def read_image(image_path):
-        aa = os.path.join(os.path.dirname(__file__), image_path)
-        return cv2.imread(aa)
+        file_path = os.path.join(os.path.dirname(__file__), image_path)
+        return cv2.imread(file_path)
 
     def detect_multi_scale(self, gray, scale_factor, min_neighbors, min_size):
         return self.FACE_CASCADE.detectMultiScale(
@@ -54,7 +54,7 @@ class FaceRecognition(Base):
             self.print_single_image(image, faces)
 
 
-# face_recognition = FaceRecognition()
-# config = face_recognition.read_config('config.yaml')
-# images_with_faces = face_recognition.get_images_with_faces(config)
-# face_recognition.print_images(images_with_faces)
+face_recognition = FaceRecognition()
+config = face_recognition.read_config('config.yaml')
+images_with_faces = face_recognition.get_images_with_faces(config)
+face_recognition.print_images(images_with_faces)
